@@ -1,0 +1,24 @@
+﻿services:
+  rinhabackend.api:
+    image: rinhabackend.api
+    build:
+      context: .
+      dockerfile: RinhaBackend.Api/Dockerfile
+    ports:
+      - "7623:8080"
+
+  rinhabackend.worker:
+    image: rinhabackend.worker
+    build:
+      context: .
+      dockerfile: RinhaBackend.Worker/Dockerfile
+        
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - 5672:5672
+      - 15672:15672

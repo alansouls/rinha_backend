@@ -1,0 +1,40 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  rinhabackend.api:
+    build:
+      context: "/Users/alan/dev/open-source/RinhaBackend"
+      dockerfile: "RinhaBackend.Api/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net9.0/RinhaBackend.Api.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "rinhabackend.api:dev"
+    ports: []
+    volumes:
+    - "/Users/alan/dev/open-source/RinhaBackend/RinhaBackend.Api:/app:rw"
+    - "/Users/alan/dev/open-source/RinhaBackend:/src:rw"
+    - "/Users/alan/.nuget/packages:/home/app/.nuget/packages"
+    working_dir: "/app"
+  rinhabackend.worker:
+    build:
+      context: "/Users/alan/dev/open-source/RinhaBackend"
+      dockerfile: "RinhaBackend.Worker/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net9.0/RinhaBackend.Worker.dll"
+    environment:
+      DOTNET_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "rinhabackend.worker:dev"
+    ports: []
+    volumes:
+    - "/Users/alan/dev/open-source/RinhaBackend/RinhaBackend.Worker:/app:rw"
+    - "/Users/alan/dev/open-source/RinhaBackend:/src:rw"
+    - "/Users/alan/.nuget/packages:/home/app/.nuget/packages"
+    working_dir: "/app"
