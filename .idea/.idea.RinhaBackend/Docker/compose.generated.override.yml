@@ -2,39 +2,75 @@
 services:
   rinhabackend.api:
     build:
-      context: "/Users/alan/dev/open-source/RinhaBackend"
+      context: "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend"
       dockerfile: "RinhaBackend.Api/Dockerfile"
       target: "base"
+      args:
+        BUILD_CONFIGURATION: "Debug"
     command: []
     entrypoint:
-    - "dotnet"
-    - "/app/bin/Debug/net9.0/RinhaBackend.Api.dll"
+    - "/opt/JetBrains/RiderDebuggerTools/linux-x64/JetBrains.Debugger.Worker"
+    - "--runtimeconfig"
+    - "/opt/JetBrains/RiderDebuggerTools/JetBrains.Debugger.Worker.runtimeconfig.json"
+    - "--mode=server"
+    - "--frontend-port=57000"
+    - "--backend-port=57200"
+    - "--roslyn-worker-port=57441"
+    - "--timeout=60"
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      RIDER_DEBUGGER_LOG_DIR: "/var/opt/JetBrains/RiderDebuggerTools"
+      RESHARPER_LOG_CONF: "/etc/opt/JetBrains/RiderDebuggerTools/backend-log.xml"
     image: "rinhabackend.api:dev"
-    ports: []
+    ports:
+    - "127.0.0.1:57041:57000"
+    - "127.0.0.1:57241:57200"
+    - "127.0.0.1:57441:57441"
     volumes:
-    - "/Users/alan/dev/open-source/RinhaBackend/RinhaBackend.Api:/app:rw"
-    - "/Users/alan/dev/open-source/RinhaBackend:/src:rw"
-    - "/Users/alan/.nuget/packages:/home/app/.nuget/packages"
+    - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend\\RinhaBackend.Api:/app:rw"
+    - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend:/src:rw"
+    - "C:\\Users\\maiaa\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\Users\\maiaa\\AppData\\Local\\JetBrains\\RiderRemoteDebugger\\2025.1.2\\\
+      Linux64:/opt/JetBrains/RiderDebuggerTools"
+    - "C:\\Program Files\\JetBrains\\JetBrains Rider 2025.1.1\\bin\\backend-log.xml:/etc/opt/JetBrains/RiderDebuggerTools/backend-log.xml"
+    - "C:\\Users\\maiaa\\AppData\\Local\\JetBrains\\Rider2025.1\\log\\DebuggerWorker\\\
+      JetBrains.Debugger.Worker.2025_7_09_21_28_15:/var/opt/JetBrains/RiderDebuggerTools:rw"
     working_dir: "/app"
   rinhabackend.worker:
     build:
-      context: "/Users/alan/dev/open-source/RinhaBackend"
+      context: "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend"
       dockerfile: "RinhaBackend.Worker/Dockerfile"
       target: "base"
+      args:
+        BUILD_CONFIGURATION: "Debug"
     command: []
     entrypoint:
-    - "dotnet"
-    - "/app/bin/Debug/net9.0/RinhaBackend.Worker.dll"
+    - "/opt/JetBrains/RiderDebuggerTools/linux-x64/JetBrains.Debugger.Worker"
+    - "--runtimeconfig"
+    - "/opt/JetBrains/RiderDebuggerTools/JetBrains.Debugger.Worker.runtimeconfig.json"
+    - "--mode=server"
+    - "--frontend-port=57000"
+    - "--backend-port=57200"
+    - "--roslyn-worker-port=57442"
+    - "--timeout=60"
     environment:
       DOTNET_ENVIRONMENT: "Development"
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      RIDER_DEBUGGER_LOG_DIR: "/var/opt/JetBrains/RiderDebuggerTools"
+      RESHARPER_LOG_CONF: "/etc/opt/JetBrains/RiderDebuggerTools/backend-log.xml"
     image: "rinhabackend.worker:dev"
-    ports: []
+    ports:
+    - "127.0.0.1:57042:57000"
+    - "127.0.0.1:57242:57200"
+    - "127.0.0.1:57442:57442"
     volumes:
-    - "/Users/alan/dev/open-source/RinhaBackend/RinhaBackend.Worker:/app:rw"
-    - "/Users/alan/dev/open-source/RinhaBackend:/src:rw"
-    - "/Users/alan/.nuget/packages:/home/app/.nuget/packages"
+    - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend\\RinhaBackend.Worker:/app:rw"
+    - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend:/src:rw"
+    - "C:\\Users\\maiaa\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\Users\\maiaa\\AppData\\Local\\JetBrains\\RiderRemoteDebugger\\2025.1.2\\\
+      Linux64:/opt/JetBrains/RiderDebuggerTools"
+    - "C:\\Program Files\\JetBrains\\JetBrains Rider 2025.1.1\\bin\\backend-log.xml:/etc/opt/JetBrains/RiderDebuggerTools/backend-log.xml"
+    - "C:\\Users\\maiaa\\AppData\\Local\\JetBrains\\Rider2025.1\\log\\DebuggerWorker\\\
+      JetBrains.Debugger.Worker.2025_7_09_21_28_15:/var/opt/JetBrains/RiderDebuggerTools:rw"
     working_dir: "/app"

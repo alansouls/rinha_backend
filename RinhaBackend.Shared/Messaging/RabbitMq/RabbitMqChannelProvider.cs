@@ -24,7 +24,9 @@ internal class RabbitMqChannelProvider
         var factory = new ConnectionFactory
         {
             HostName = _options.HostName,
-            Port = _options.Port
+            Port = _options.Port,
+            UserName = "guest",
+            Password = "guest"
         };
 
         var connection = await factory.CreateConnectionAsync();

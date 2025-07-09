@@ -15,20 +15,21 @@ internal class RabbitMqConsumer : IConsumer
         _channelProvider = channelProvider;
     }
 
-    public async Task<T> ConsumeAsync<T>(JsonTypeInfo<T> jsonTypeInfo) where T : class
+    public async IAsyncEnumerable<T> ConsumeAsync<T>(JsonTypeInfo<T> jsonTypeInfo) where T : class
     {
         var channel = await _channelProvider.GetChannel(typeof(T).Name);
 
         var resultTaskCompletionSource = new TaskCompletionSource<T>();
 
         var consumer = new AsyncEventingBasicConsumer(channel);
-        consumer.ReceivedAsync += (ch, args) =>
+        
+        AsyncEventHandler<BasicDeliverEventArgs> handler = (ch, args) =>
         {
             try
             {
                 var message = JsonSerializer.Deserialize(args.Body.Span, jsonTypeInfo)
                               ?? throw new Exception("Deserialized message is null");
-
+                
                 resultTaskCompletionSource.SetResult(message);
             }
             catch (Exception e)
@@ -38,9 +39,14 @@ internal class RabbitMqConsumer : IConsumer
 
             return Task.CompletedTask;
         };
+        consumer.ReceivedAsync += handler;
         
         await channel.BasicConsumeAsync(typeof(T).Name, autoAck: true, consumer);
 
-        return await resultTaskCompletionSource.Task;
+        while (true)
+        {
+            yield return await resultTaskCompletionSource.Task;
+            resultTaskCompletionSource = new TaskCompletionSource<T>();
+        }
     }
 }

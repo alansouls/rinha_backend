@@ -4,5 +4,5 @@ namespace RinhaBackend.Shared.Messaging.Interfaces;
 
 public interface IConsumer
 {
-    Task<T> ConsumeAsync<T>(JsonTypeInfo<T> jsonTypeInfo) where T : class;
+    IAsyncEnumerable<T> ConsumeAsync<T>(JsonTypeInfo<T> jsonTypeInfo) where T : class;
 }
