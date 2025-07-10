@@ -1,59 +1,59 @@
 # This is a generated file. Not intended for manual editing.
 services:
-  rinhabackend.api-1:
+  rinhabackend.api1:
     build:
-      context: "/Users/alan/dev/open-source/RinhaBackend"
+      context: "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend"
       dockerfile: "RinhaBackend.Api/Dockerfile"
       target: "base"
     command: []
     entrypoint:
     - "dotnet"
-    - "/app/bin/Release/net9.0/RinhaBackend.Api.dll"
+    - "/app/bin/Debug/net9.0/RinhaBackend.Api.dll"
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
     image: "rinhabackend.api:dev"
     ports: []
     volumes:
-    - "/Users/alan/dev/open-source/RinhaBackend/RinhaBackend.Api:/app:rw"
-    - "/Users/alan/dev/open-source/RinhaBackend:/src:rw"
-    - "/Users/alan/.nuget/packages:/home/app/.nuget/packages"
+    - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend\\RinhaBackend.Api:/app:rw"
+    - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend:/src:rw"
+    - "C:\\Users\\maiaa\\.nuget\\packages:/home/app/.nuget/packages"
     working_dir: "/app"
-  rinhabackend.api-2:
+  rinhabackend.api2:
     build:
-      context: "/Users/alan/dev/open-source/RinhaBackend"
+      context: "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend"
       dockerfile: "RinhaBackend.Api/Dockerfile"
       target: "base"
     command: []
     entrypoint:
     - "dotnet"
-    - "/app/bin/Release/net9.0/RinhaBackend.Api.dll"
+    - "/app/bin/Debug/net9.0/RinhaBackend.Api.dll"
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
     image: "rinhabackend.api:dev"
     ports: []
     volumes:
-    - "/Users/alan/dev/open-source/RinhaBackend/RinhaBackend.Api:/app:rw"
-    - "/Users/alan/dev/open-source/RinhaBackend:/src:rw"
-    - "/Users/alan/.nuget/packages:/home/app/.nuget/packages"
+    - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend\\RinhaBackend.Api:/app:rw"
+    - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend:/src:rw"
+    - "C:\\Users\\maiaa\\.nuget\\packages:/home/app/.nuget/packages"
     working_dir: "/app"
   rinhabackend.worker:
     build:
-      context: "/Users/alan/dev/open-source/RinhaBackend"
+      context: "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend"
       dockerfile: "RinhaBackend.Worker/Dockerfile"
       target: "base"
     command: []
     entrypoint:
     - "dotnet"
-    - "/app/bin/Release/net9.0/RinhaBackend.Worker.dll"
+    - "/app/bin/Debug/net9.0/RinhaBackend.Worker.dll"
     environment:
       DOTNET_ENVIRONMENT: "Development"
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
     image: "rinhabackend.worker:dev"
     ports: []
     volumes:
-    - "/Users/alan/dev/open-source/RinhaBackend/RinhaBackend.Worker:/app:rw"
-    - "/Users/alan/dev/open-source/RinhaBackend:/src:rw"
-    - "/Users/alan/.nuget/packages:/home/app/.nuget/packages"
+    - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend\\RinhaBackend.Worker:/app:rw"
+    - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend:/src:rw"
+    - "C:\\Users\\maiaa\\.nuget\\packages:/home/app/.nuget/packages"
     working_dir: "/app"

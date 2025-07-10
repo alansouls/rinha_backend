@@ -1,37 +1,54 @@
 ﻿services:
-  rinhabackend.api-1:
-    image: rinhabackend.api
+  nginx:
+    image: nginx-loadbalancer
+    platform: "linux/amd64"
     depends_on:
-      - rabbitmq
+      - rinhabackend.api1
+      - rinhabackend.api2
     deploy:
       resources:
         limits:
-          cpus: "0.25"
+          cpus: "0.1"
           memory: "50MB"
     networks:
+      - frontdoor
       - backend
     build:
-      context: .
-      dockerfile: RinhaBackend.Api/Dockerfile
+      context: ./infra/nginx
+      dockerfile: Dockerfile
     ports:
-      - "7623:8080"
+      - "8000:80"
 
-  rinhabackend.api-2:
+  rinhabackend.api1:
     image: rinhabackend.api
     depends_on:
       - rabbitmq
     deploy:
       resources:
         limits:
-          cpus: "0.25"
+          cpus: "0.1"
           memory: "50MB"
     networks:
       - backend
     build:
       context: .
       dockerfile: RinhaBackend.Api/Dockerfile
-    ports:
-      - "7624:8080"
+
+  rinhabackend.api2:
+    image: rinhabackend.api
+    depends_on:
+      - rabbitmq
+    platform: "linux/amd64"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: "50MB"
+    networks:
+      - backend
+    build:
+      context: .
+      dockerfile: RinhaBackend.Api/Dockerfile
 
   rinhabackend.worker:
     image: rinhabackend.worker
@@ -40,7 +57,7 @@
     deploy:
       resources:
         limits:
-          cpus: "0.5"
+          cpus: "0.7"
           memory: "150MB"
     networks:
       - backend
@@ -66,6 +83,9 @@
       - "15672:15672"
 
 networks:
+  frontdoor:
+    # Specify driver options
+    driver: bridge
   backend:
     # Specify driver options
     driver: bridge
