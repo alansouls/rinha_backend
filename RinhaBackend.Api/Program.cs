@@ -15,6 +15,8 @@ builder.Services.AddRabbitMqMessaging();
 
 var app = builder.Build();
 
+Console.WriteLine(Environment.ProcessPath);
+
 var todosApi = app.MapGroup("/todos");
 todosApi.MapPost("/", (Todo todo, IMessenger messenger) =>
 {

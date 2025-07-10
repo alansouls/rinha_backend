@@ -1,14 +1,13 @@
 ﻿services:
-  rinhabackend.api:
+  rinhabackend.api-1:
     image: rinhabackend.api
     depends_on:
       - rabbitmq
-    platform: "linux/amd64"
     deploy:
       resources:
         limits:
-          cpus: "0.5"
-          memory: "100MB"
+          cpus: "0.25"
+          memory: "50MB"
     networks:
       - backend
     build:
@@ -17,9 +16,25 @@
     ports:
       - "7623:8080"
 
+  rinhabackend.api-2:
+    image: rinhabackend.api
+    depends_on:
+      - rabbitmq
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: "50MB"
+    networks:
+      - backend
+    build:
+      context: .
+      dockerfile: RinhaBackend.Api/Dockerfile
+    ports:
+      - "7624:8080"
+
   rinhabackend.worker:
     image: rinhabackend.worker
-    platform: "linux/amd64"
     depends_on:
       - rabbitmq
     deploy:
@@ -35,7 +50,6 @@
         
   rabbitmq:
     image: rabbitmq:3-management
-    platform: "linux/amd64"
     deploy:
       resources:
         limits:
