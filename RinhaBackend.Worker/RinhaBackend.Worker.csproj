@@ -6,7 +6,6 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <PublishAot>true</PublishAot>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,6 +16,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\RinhaBackend.Shared\RinhaBackend.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.8" />
     </ItemGroup>
 
 </Project>

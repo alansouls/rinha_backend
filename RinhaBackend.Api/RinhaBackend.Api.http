@@ -1,13 +1,17 @@
 @RinhaBackend.Api_HostAddress = http://localhost:8080
 
-POST  http://localhost:8000/todos/
+POST  http://localhost:9999/payments/
 Accept: application/json
 Content-Type: application/json
 
 {
-    "title": "Learn HTTP",
-    "description": "Understand how to use HTTP methods and status codes",
-    "completed": false
+  "correlationId": "4a7901b8-7d26-4d9d-aa19-4dc1c7cf6014",
+  "amount": 19.90
 }
+
+###
+
+GET http://localhost:9999/payments-summary
+Accept: application/json
 
 ###

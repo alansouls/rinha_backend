@@ -2,6 +2,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RinhaBackend.Shared.Domain.Outbox;
+using RinhaBackend.Shared.JsonSerialization;
 using RinhaBackend.Shared.Messaging.Interfaces;
 
 namespace RinhaBackend.Shared.Messaging.RabbitMq;
@@ -15,11 +17,11 @@ internal class RabbitMqConsumer : IConsumer
         _channelProvider = channelProvider;
     }
 
-    public async IAsyncEnumerable<T> ConsumeAsync<T>(JsonTypeInfo<T> jsonTypeInfo) where T : class
+    public async IAsyncEnumerable<TypedOutboxMessage<T>> ConsumeAsync<T>(JsonTypeInfo<T> jsonTypeInfo) where T : class
     {
         var channel = await _channelProvider.GetChannel(typeof(T).Name);
 
-        var resultTaskCompletionSource = new TaskCompletionSource<T>();
+        var resultTaskCompletionSource = new TaskCompletionSource<TypedOutboxMessage<T>>();
 
         var consumer = new AsyncEventingBasicConsumer(channel);
         
@@ -27,10 +29,10 @@ internal class RabbitMqConsumer : IConsumer
         {
             try
             {
-                var message = JsonSerializer.Deserialize(args.Body.Span, jsonTypeInfo)
+                var message = JsonSerializer.Deserialize(args.Body.Span, AppJsonSerializerContext.Default.OutboxMessage)
                               ?? throw new Exception("Deserialized message is null");
                 
-                resultTaskCompletionSource.SetResult(message);
+                resultTaskCompletionSource.SetResult(message.ToTyped(jsonTypeInfo));
             }
             catch (Exception e)
             {
@@ -39,6 +41,7 @@ internal class RabbitMqConsumer : IConsumer
 
             return Task.CompletedTask;
         };
+        
         consumer.ReceivedAsync += handler;
         
         await channel.BasicConsumeAsync(typeof(T).Name, autoAck: true, consumer);
@@ -46,7 +49,7 @@ internal class RabbitMqConsumer : IConsumer
         while (true)
         {
             yield return await resultTaskCompletionSource.Task;
-            resultTaskCompletionSource = new TaskCompletionSource<T>();
+            resultTaskCompletionSource = new TaskCompletionSource<TypedOutboxMessage<T>>();
         }
     }
 }

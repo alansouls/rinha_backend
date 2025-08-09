@@ -4,5 +4,5 @@ namespace RinhaBackend.Shared.Messaging.Interfaces;
 
 public interface IMessenger
 {
-   Task SendAsync<T>(T message, JsonTypeInfo<T> jsonTypeInfo) where T : class;
+   Task SendAsync<T>(T message, JsonTypeInfo<T> jsonTypeInfo, Guid? messageId, CancellationToken cancellationToken) where T : class;
 }

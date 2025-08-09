@@ -38,6 +38,25 @@ services:
     - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend:/src:rw"
     - "C:\\Users\\maiaa\\.nuget\\packages:/home/app/.nuget/packages"
     working_dir: "/app"
+  rinhabackend.migrations:
+    build:
+      context: "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend"
+      dockerfile: "RinhaBackend.Migrations/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net9.0/RinhaBackend.Migrations.dll"
+    environment:
+      DOTNET_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "rinhabackend.migrations:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend\\RinhaBackend.Migrations:/app:rw"
+    - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend:/src:rw"
+    - "C:\\Users\\maiaa\\.nuget\\packages:/home/app/.nuget/packages"
+    working_dir: "/app"
   rinhabackend.worker:
     build:
       context: "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend"

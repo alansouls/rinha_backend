@@ -1,4 +1,12 @@
 ﻿services:
+  rinhabackend.migrations:
+    image: rinhabackend.migrations
+    networks:
+      - backend
+    build:
+      context: .
+      dockerfile: RinhaBackend.Migrations/Dockerfile
+      
   nginx:
     image: nginx-loadbalancer
     platform: "linux/amd64"
@@ -17,11 +25,12 @@
       context: ./infra/nginx
       dockerfile: Dockerfile
     ports:
-      - "8000:80"
+      - "9999:80"
 
   rinhabackend.api1:
     image: rinhabackend.api
     depends_on:
+      - rinhabackend.migrations
       - rabbitmq
     deploy:
       resources:
@@ -37,6 +46,7 @@
   rinhabackend.api2:
     image: rinhabackend.api
     depends_on:
+      - rinhabackend.migrations
       - rabbitmq
     platform: "linux/amd64"
     deploy:
@@ -53,6 +63,7 @@
   rinhabackend.worker:
     image: rinhabackend.worker
     depends_on:
+      - rinhabackend.migrations
       - rabbitmq
     deploy:
       resources:
@@ -61,6 +72,7 @@
           memory: "150MB"
     networks:
       - backend
+      - payment-processor
     build:
       context: .
       dockerfile: RinhaBackend.Worker/Dockerfile
@@ -81,6 +93,24 @@
     ports:
       - "5672:5672"
       - "15672:15672"
+  
+  postgres:
+    image: postgres:latest
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "100MB"
+    networks:
+      - frontdoor
+      - backend
+    container_name: postgres
+    environment:
+        POSTGRES_USER: rinha
+        POSTGRES_PASSWORD: rinha
+        POSTGRES_DB: rinha
+    ports:
+      - "5433:5432"
 
 networks:
   frontdoor:
@@ -89,3 +119,6 @@ networks:
   backend:
     # Specify driver options
     driver: bridge
+  payment-processor:
+      external: true
+
