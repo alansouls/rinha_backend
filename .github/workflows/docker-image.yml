@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build API Docker image
+      run: docker build . --file ./RinhaBackend.Api/Dockerfile --tag alansouls-rinhabackend-api:$(date +%s)
+      
+    - uses: actions/checkout@v4
+    - name: Build Worker Docker image
+      run: docker build . --file ./RinhaBackend.Worker/Dockerfile --tag alansouls-rinhabackend-worker:$(date +%s)
