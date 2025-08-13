@@ -5,13 +5,13 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "correlationId": "4a7901b8-7d26-4d9d-aa19-4dc1c7cf6014",
+  "correlationId": "4a7901b8-7d26-4d9d-aa19-4dc1c7cf601a",
   "amount": 19.90
 }
 
 ###
 
-GET http://localhost:9999/payments-summary
+GET http://localhost:9999/payments-summary?from=2025-08-13T23:42:24.915Z&to=2025-08-13T23:42:38.415Z
 Accept: application/json
 
 ###

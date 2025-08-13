@@ -17,7 +17,8 @@ internal class RabbitMqConsumer : IConsumer
         _channelProvider = channelProvider;
     }
 
-    public async IAsyncEnumerable<TypedOutboxMessage<T>> ConsumeAsync<T>(JsonTypeInfo<T> jsonTypeInfo) where T : class
+    public async IAsyncEnumerable<TypedOutboxMessage<T>> ConsumeAsync<T>(JsonTypeInfo<T> jsonTypeInfo,
+        CancellationToken cancellationToken) where T : class
     {
         var channel = await _channelProvider.GetChannel(typeof(T).Name);
 
