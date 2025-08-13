@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RinhaBackend.Worker", "Rinh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RinhaBackend.Shared", "RinhaBackend.Shared\RinhaBackend.Shared.csproj", "{7FC9C512-14EC-4A81-9544-8835983A3BFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RinhaBackend.Migrations", "RinhaBackend.Migrations\RinhaBackend.Migrations.csproj", "{CCF5D3A5-3338-46ED-9234-D041949D2B63}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,9 +29,5 @@ Global
 		{7FC9C512-14EC-4A81-9544-8835983A3BFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FC9C512-14EC-4A81-9544-8835983A3BFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FC9C512-14EC-4A81-9544-8835983A3BFE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CCF5D3A5-3338-46ED-9234-D041949D2B63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CCF5D3A5-3338-46ED-9234-D041949D2B63}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CCF5D3A5-3338-46ED-9234-D041949D2B63}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CCF5D3A5-3338-46ED-9234-D041949D2B63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

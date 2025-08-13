@@ -2,5 +2,6 @@
 
 public class WorkerOptions
 {
-    public int MaxConcurrentTasks { get; set; } = 10;
+    public int WorkerPort { get; set; } = 5000;
+    public int MaxConcurrentTasks { get; set; } = 64;
 }

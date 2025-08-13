@@ -1,4 +1,4 @@
-﻿namespace RinhaBackend.Shared.Domain.Common;
+﻿namespace RinhaBackend.Shared.Domain.Outbox;
 
 public enum OutboxState
 {

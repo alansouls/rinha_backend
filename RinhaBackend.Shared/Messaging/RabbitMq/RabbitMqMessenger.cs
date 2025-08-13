@@ -3,8 +3,6 @@ using System.Text.Json.Serialization.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
-using RinhaBackend.Shared.Data;
-using RinhaBackend.Shared.Domain.Common;
 using RinhaBackend.Shared.Domain.Outbox;
 using RinhaBackend.Shared.JsonSerialization;
 using RinhaBackend.Shared.Messaging.Interfaces;
@@ -30,7 +28,7 @@ public class RabbitMqMessenger : IMessenger
         var channel = await GetChannel<T>();
 
         var created = DateTimeOffset.UtcNow;
-
+        
         var outboxMessage = new OutboxMessage()
         {
             Id = messageId ?? Guid.NewGuid(),
@@ -43,23 +41,31 @@ public class RabbitMqMessenger : IMessenger
         };
         
         using var scope = _serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<RinhaContext>();
+        // var context = scope.ServiceProvider.GetRequiredService<RinhaContext>();
 
-        await context.AddAsync(outboxMessage, cancellationToken);
+        // await context.AddAsync(outboxMessage, cancellationToken);
 
         var body = JsonSerializer.SerializeToUtf8Bytes(outboxMessage, AppJsonSerializerContext.Default.OutboxMessage);
 
-        try
-        {
-            await channel.BasicPublishAsync(exchange: string.Empty, routingKey: typeof(T).Name, body.AsMemory(),
-                cancellationToken: cancellationToken);
-        }
-        catch (Exception ex) when (ex is not TaskCanceledException and not OperationCanceledException)
-        {
-            outboxMessage.State = OutboxState.ReadyToRetry;
-        }
+        // try
+        // {
+        //     await channel.BasicPublishAsync(exchange: string.Empty, routingKey: typeof(T).Name, body.AsMemory(),
+        //         cancellationToken: cancellationToken);
+        // }
+        // catch (Exception ex) when (ex is not TaskCanceledException and not OperationCanceledException)
+        // {
+        //     outboxMessage.State = OutboxState.ReadyToRetry;
+        // }
         
-        await context.SaveChangesAsync(cancellationToken);
+        // await context.SaveChangesAsync(cancellationToken);
+        
+        await channel.BasicPublishAsync(exchange: string.Empty, routingKey: typeof(T).Name, body.AsMemory(),
+            cancellationToken: cancellationToken);
+    }
+
+    public Task BroadcastAsync<T>(T message, JsonTypeInfo<T> jsonTypeInfo, CancellationToken cancellationToken) where T : class
+    {
+        throw new NotImplementedException();
     }
 
     private async Task<IChannel> GetChannel<T>() where T : class

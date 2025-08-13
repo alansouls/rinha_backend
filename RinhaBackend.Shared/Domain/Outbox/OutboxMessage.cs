@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
-using RinhaBackend.Shared.Domain.Common;
 
 namespace RinhaBackend.Shared.Domain.Outbox;
 

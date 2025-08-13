@@ -1,6 +1,4 @@
-﻿using RinhaBackend.Shared.Domain.Common;
-
-namespace RinhaBackend.Shared.Domain.Inbox;
+﻿namespace RinhaBackend.Shared.Domain.Inbox;
 
 public class InboxMessage
 {
