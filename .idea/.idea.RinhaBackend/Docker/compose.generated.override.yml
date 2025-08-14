@@ -17,7 +17,7 @@ services:
     volumes:
     - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend\\RinhaBackend.Api:/app:rw"
     - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend:/src:rw"
-    - "C:\\Users\\maiaa\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\Users\\maiaa\\.nuget\\packages:/root/.nuget/packages"
     working_dir: "/app"
   rinhabackend.api2:
     build:
@@ -36,7 +36,7 @@ services:
     volumes:
     - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend\\RinhaBackend.Api:/app:rw"
     - "C:\\Users\\maiaa\\Documents\\Dev\\personal\\rinha_backend:/src:rw"
-    - "C:\\Users\\maiaa\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\Users\\maiaa\\.nuget\\packages:/root/.nuget/packages"
     working_dir: "/app"
   rinhabackend.worker:
     build:
