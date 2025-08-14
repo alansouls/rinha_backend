@@ -1,5 +1,5 @@
 ﻿# Use runtime-deps for AOT since we don't need the full .NET runtime
-FROM mcr.microsoft.com/dotnet/runtime-deps:9.0-jammy-chiseled AS base
+FROM mcr.microsoft.com/dotnet/runtime-deps:9.0 AS base
 USER $APP_UID
 WORKDIR /app
 
