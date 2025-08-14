@@ -4,6 +4,11 @@ USER $APP_UID
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+# Install native AOT prerequisites
+RUN apt-get update && apt-get install -y \
+    clang \
+    zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/*
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["RinhaBackend.Worker/RinhaBackend.Worker.csproj", "RinhaBackend.Worker/"]
