@@ -1,5 +1,8 @@
-﻿namespace RinhaBackend.Shared.ThirdParty.Options;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace RinhaBackend.Shared.ThirdParty.Options;
+
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 public class PaymentServiceOptions
 {
     public string DefaultUrl { get; set; } = string.Empty;
