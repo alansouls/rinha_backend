@@ -28,9 +28,7 @@ internal class Worker : BackgroundService
 {
     private readonly IConsumer _consumer;
     private readonly IServiceProvider _serviceProvider;
-    private const int _maxRetries = 3;
     private readonly SemaphoreSlim _semaphoreSlim;
-    private readonly ILogger<Worker> _logger;
     private readonly IMessenger _messenger;
 
     public Worker(IConsumer consumer, IServiceProvider serviceProvider, IOptions<WorkerOptions> options,
@@ -38,7 +36,6 @@ internal class Worker : BackgroundService
     {
         _consumer = consumer;
         _serviceProvider = serviceProvider;
-        _logger = logger;
         _messenger = messenger;
         _semaphoreSlim = new SemaphoreSlim(options.Value.MaxConcurrentTasks);
     }
@@ -47,36 +44,25 @@ internal class Worker : BackgroundService
     {
         while (true)
         {
-            _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             try
             {
                 await foreach (var message in _consumer
                                    .ConsumeAsync<PostPaymentDto>(AppJsonSerializerContext.Default.PostPaymentDto,
                                        stoppingToken))
                 {
-                    _logger.LogInformation(
-                        "Received message with Id: {Id}, CorrelationId: {CorrelationId}, Amount: {Amount}",
-                        message.Id, message.Payload.CorrelationId, message.Payload.Amount);
                     _ = Task.Run(async () => await ProcessMessage(stoppingToken, message), stoppingToken);
                 }
             }
-            catch (BrokerUnreachableException ex)
+            catch
             {
-                _logger.LogError(ex, "Broker unreachable. Retrying in 5 seconds...");
-                await Task.Delay(5000, stoppingToken);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while consuming messages: {Message}", ex.Message);
+                //Ignore
             }
         }
     }
 
     private async Task ProcessMessage(CancellationToken stoppingToken, TypedOutboxMessage<PostPaymentDto> message)
     {
-        _logger.LogInformation("About to wait for semaphore");
         await _semaphoreSlim.WaitAsync(stoppingToken);
-        _logger.LogInformation("In semaphore");
         try
         {
             using var scope = _serviceProvider.CreateScope();
@@ -87,19 +73,15 @@ internal class Worker : BackgroundService
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Error processing payment for CorrelationId: {CorrelationId}, Amount: {Amount}",
-                    message.Payload.CorrelationId, message.Payload.Amount);
+                //Ignore
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex,
-                "An error occurred while processing message with Id: {Id}, CorrelationId: {CorrelationId}, Amount: {Amount}",
-                message.Id, message.Payload.CorrelationId, message.Payload.Amount);
+            // Ignore
         }
         finally
         {
-            _logger.LogDebug("Releasing semaphore for message with Id: {Id}", message.Id);
             _semaphoreSlim.Release();
         }
     }
@@ -111,14 +93,8 @@ internal class Worker : BackgroundService
 
         if (result is null)
         {
-            _logger.LogError("Payment processing failed for CorrelationId: {CorrelationId}, Amount: {Amount}",
-                payload.CorrelationId, payload.Amount);
             return false;
         }
-
-        _logger.LogDebug(
-            "Payment processed successfully for CorrelationId: {CorrelationId}, Amount: {Amount}, Service: {Service}, TimeStamp: {TimeStamp}",
-            payload.CorrelationId, payload.Amount, result.Value.Item1, result.Value.Item2);
 
         await _messenger.BroadcastAsync(new PaymentUpdated()
         {

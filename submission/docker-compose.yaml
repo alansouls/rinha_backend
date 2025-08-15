@@ -23,8 +23,8 @@
     deploy:
       resources:
         limits:
-          cpus: "0.3"
-          memory: "70MB"
+          cpus: "0.45"
+          memory: "100MB"
     networks:
       - backend
 
@@ -34,8 +34,8 @@
     deploy:
       resources:
         limits:
-          cpus: "0.3"
-          memory: "70MB"
+          cpus: "0.45"
+          memory: "100MB"
     networks:
       - backend
       
@@ -45,7 +45,7 @@
       resources:
         limits:
           cpus: "0.8"
-          memory: "200MB"
+          memory: "100MB"
     networks:
       - backend
       - payment-processor
