@@ -10,7 +10,15 @@ public static class ServiceCollectionExtensions
         IConfiguration configuration)
     {
         services.AddSingleton<IServiceHealthProvider, ServiceHealthProvider>();
-        var options = configuration.GetSection("PaymentService").Get<PaymentServiceOptions>()!;
+        var options = new PaymentServiceOptions()
+        {
+            DefaultUrl = configuration.GetValue<string>("PaymentService:DefaultUrl") ?? string.Empty,
+            DefaultTimeout =
+                configuration.GetValue<TimeSpan>("PaymentService:DefaultTimeout", TimeSpan.FromSeconds(30)),
+            FallbackUrl = configuration.GetValue<string>("PaymentService:FallbackUrl") ?? string.Empty,
+            FallbackTimeout =
+                configuration.GetValue<TimeSpan>("PaymentService:FallbackTimeout", TimeSpan.FromSeconds(30))
+        };
         services.AddHttpClient("PaymentDefault",
             client =>
             {
