@@ -12,12 +12,12 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IServiceHealthProvider, ServiceHealthProvider>();
         var options = new PaymentServiceOptions()
         {
-            DefaultUrl = configuration.GetValue<string>("PaymentService:DefaultUrl") ?? string.Empty,
+            DefaultUrl = configuration.GetValue<string>("PaymentService:DefaultUrl") ?? "http://payment-processor-default:8080/payments",
             DefaultTimeout =
-                configuration.GetValue<TimeSpan>("PaymentService:DefaultTimeout", TimeSpan.FromSeconds(30)),
-            FallbackUrl = configuration.GetValue<string>("PaymentService:FallbackUrl") ?? string.Empty,
+                configuration.GetValue("PaymentService:DefaultTimeout", TimeSpan.FromSeconds(5)),
+            FallbackUrl = configuration.GetValue<string>("PaymentService:FallbackUrl") ?? "http://payment-processor-fallback:8080/payments",
             FallbackTimeout =
-                configuration.GetValue<TimeSpan>("PaymentService:FallbackTimeout", TimeSpan.FromSeconds(30))
+                configuration.GetValue("PaymentService:FallbackTimeout", TimeSpan.FromSeconds(5))
         };
         services.AddHttpClient("PaymentDefault",
             client =>
