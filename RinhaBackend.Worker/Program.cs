@@ -16,7 +16,7 @@ using RinhaBackend.Worker.Options;
 
 HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-builder.Services.AddUdpMessaging("localhost", 9840, 9841, 9842, ["rinhabackend.api1", "rinhabackend.api2", "rinhabackend.api3", "rinhabackend.api4"]);
+builder.Services.AddUdpMessaging("localhost", 9840, 9841, 9842, ["rinhabackend.api1", "rinhabackend.api2"]);
 builder.Services.AddHostedService<Worker>();
 builder.Services.AddThirdPartyPaymentProcessor(builder.Configuration);
 builder.Services.Configure<WorkerOptions>(s => builder.Configuration.GetSection("WorkerOptions").Bind(s));
